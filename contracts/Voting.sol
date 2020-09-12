@@ -1,18 +1,18 @@
 pragma solidity >=0.4.25 <0.7.0;
 
 
-contract 2020Election {
+contract Election {
 	// Address of the contract owner
 	address ownerAddress;
 	
 	// Vote counts
 	uint votesForA;
-	uint voltesForB;
+	uint votesForB;
 	
 	// Voter registration
-	mapping(address => boolean) public registeredVoters;
+	mapping(address => bool) public registeredVoters;
 	// Whether or not each vote has voted
-	mapping (address => boolean) public voterHasVoted;
+	mapping (address => bool) public voterHasVoted;
 	
 	// Init
 	constructor() public {
@@ -27,12 +27,12 @@ contract 2020Election {
 		registeredVoters[newVoter] = true;
 	}
 	
-	function vote (boolean forCantidateA) external {
+	function vote (bool forCantidateA) external {
 		// Note that msg.sender is guaranteed authentic 
 		address sender = msg.sender;
 		if (registeredVoters[sender] == true 
 			&& voterHasVoted[sender] == false) {
-			voterHasVoted[addr] = true;
+			voterHasVoted[sender] = true;
 			
 			if (forCantidateA) {
 				votesForA++;
@@ -42,10 +42,14 @@ contract 2020Election {
 		}
 	}
 	
-	function cantidateAVotes() external view returns (int) { 
+	function getCandidateAVotes() external view returns (uint) { 
 		return votesForA;	
 	}
-	function cantidateBVotes() external view returns (int) { 
+	function getCandidateBVotes() external view returns (uint) { 
 		return votesForB;	
+	}
+
+	function addressIsRegistered(address voterAddr) external view returns (bool) { 
+        return registeredVoters[voterAddr] == true;
 	}
 }
